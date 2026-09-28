@@ -1189,3 +1189,13 @@ input[type="color"] {
     transition-duration: 0.01ms !important;
   }
 }
+
+.brand-subtitle {
+  margin: 0.4rem 0 0;
+  font-size: 0.65rem;
+  line-height: 1.35;
+  color: var(--muted-foreground);
+}
+@media (max-width: 380px) {
+  .brand-subtitle { max-width: 9rem; }
+}

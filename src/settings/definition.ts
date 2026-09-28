@@ -80,9 +80,9 @@ const koiPatchList = list(koiPatch, []);
 const koi = group(
   {
     initialCount: num({
-      default: 14,
-      min: 1,
-      max: 48,
+      default: 6,
+      min: 6,
+      max: 6,
       step: 1,
       int: true,
       label: "Koi count",
@@ -96,7 +96,7 @@ const koi = group(
       effect: "koi:body",
       keepsFamilyPreview: true,
     }),
-    tinyEvery: num({ default: 2, min: 2, max: 12, step: 1, int: true, effect: "koi:body" }),
+    tinyEvery: num({ default: 12, min: 2, max: 12, step: 1, int: true, effect: "koi:body" }),
     tinyLength: range({ default: [16, 22], min: 5, max: 60, step: 0.5, effect: "koi:body" }),
     regularWidthRatio: range({
       default: [0.17, 0.2],
@@ -227,9 +227,9 @@ const tinyFishPalette = group({
 const tinyFish = group(
   {
     visibleSchoolCount: num({
-      default: 3,
+      default: 0,
       min: 0,
-      max: 32,
+      max: 0,
       step: 1,
       int: true,
       effect: "tiny-fish:respawn",
@@ -823,7 +823,6 @@ export interface SettingsGroup {
 
 export const SETTINGS_GROUPS: readonly SettingsGroup[] = [
   { id: "koi", title: "Koi", description: "Fish behavior, palettes, and body markings.", sectionIds: ["koi", "koi-palettes", "koi-patterns"] },
-  { id: "tiny-fish", title: "Tiny fish", description: "School behavior, appearance, and placement.", sectionIds: ["tiny-fish", "tiny-fish-schools"] },
   { id: "water", title: "Water", description: "Pond bed, currents, tint, and ripple behavior.", sectionIds: ["pond-bed", "water", "ripples"] },
   { id: "lotus", title: "Lotus", description: "Leaves, flowers, palettes, and placement.", sectionIds: ["lotus", "lotus-leaves", "lotus-flowers"] },
   { id: "duckweed", title: "Duckweed", description: "Leaf appearance and floating patches.", sectionIds: ["duckweed", "duckweed-patches"] },

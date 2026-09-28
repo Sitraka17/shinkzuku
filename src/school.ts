@@ -29,7 +29,7 @@ export class School {
   public readonly ripples = new RippleSystem();
   public readonly tinyFish = new TinyFishSchools();
 
-  public count: number = FISH.initialCount;
+  public count: number = MAX_FISH;
   public targetActive = false;
 
   private random = new XorShift32();
@@ -40,8 +40,9 @@ export class School {
     this.fish.forEach((fish, index) => fish.reset(index, this.random));
   }
 
-  public setCount(count: number): void {
-    this.count = clamp(Math.round(count), 1, MAX_FISH);
+  public setCount(_count: number): void {
+    // Six carp represent the six passages of life, including after old saves load.
+    this.count = MAX_FISH;
   }
 
   public updateBodyProportions(previous: {

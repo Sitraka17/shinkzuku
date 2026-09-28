@@ -50,7 +50,7 @@ describe("schema defaults", () => {
 
   it("spot-checks values transcribed from the old config.ts (data fixes noted)", () => {
     const value = defaults(definition) as any;
-    expect(value.koi.initialCount).toBe(14);
+    expect(value.koi.initialCount).toBe(6);
     expect(value.koi.regularLength).toEqual([27, 40]);
     expect(value.koi.eyeColor).toBe(0x171815);
     expect(value.koi.shadow.color).toBe(0x0b211e);
@@ -61,7 +61,7 @@ describe("schema defaults", () => {
       name: "Kohaku", base: 0xf1eadb, accent: 0xdc4b2f, marking: 0x27251f, fin: 0xe6ddca,
     });
     expect(value["koi-patterns"][3]).toEqual([]);
-    expect(value["tiny-fish"].visibleSchoolCount).toBe(3);
+    expect(value["tiny-fish"].visibleSchoolCount).toBe(0);
     expect(value["tiny-fish-schools"]).toHaveLength(4);
     expect(value["pond-bed"].deepColor).toEqual([0.486, 0.718, 0.631]);
     expect(value.water.currentDistortion.waves[2]).toEqual({
@@ -79,11 +79,11 @@ describe("schema defaults", () => {
 });
 
 describe("validate", () => {
-  it("clamps and rounds numbers", () => {
+  it("fixes the koi population at six", () => {
     const node = nodeAt(definition, ["koi", "initialCount"])!;
-    expect(validate(node, 1000, definition)).toBe(48);
-    expect(validate(node, -5, definition)).toBe(1);
-    expect(validate(node, 3.6, definition)).toBe(4);
+    expect(validate(node, 1000, definition)).toBe(6);
+    expect(validate(node, -5, definition)).toBe(6);
+    expect(validate(node, 3.6, definition)).toBe(6);
     expect(validate(node, "nope", definition)).toBeUndefined();
   });
 

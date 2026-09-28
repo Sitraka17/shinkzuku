@@ -4,10 +4,8 @@ import {
   CloudRain,
   EyeOff,
   Maximize2,
-  Minus,
   Minimize2,
   Moon,
-  Plus,
   RotateCcw,
   Settings2,
   Shuffle,
@@ -89,7 +87,7 @@ const emptyStats: SceneStats = {
 };
 
 const AMBIENT_IDLE_DELAY_MS = 2400;
-const GITHUB_REPOSITORY = "msk1039/procedural-koi-threejs";
+const GITHUB_REPOSITORY = "Sitraka17/shinkzuku";
 
 // Restores v2 (or migrates v1) localStorage settings into the store before
 // the first render, and wires up debounced+pagehide saving from then on.
@@ -209,11 +207,6 @@ export function App() {
         if (runtime) setStats(sceneStats(runtime));
       });
     });
-  }, []);
-
-  const changeKoiCount = useCallback((amount: number) => {
-    const current = runtimeRef.current?.school.count ?? settings.live.koi.initialCount;
-    settings.set(["koi", "initialCount"], clamp(current + amount, 1, 48));
   }, []);
 
   const setAmbientModeState = useCallback((active: boolean) => {
@@ -486,12 +479,6 @@ export function App() {
           event.preventDefault();
           school.scatter();
           break;
-        case "BracketLeft":
-          changeKoiCount(-1);
-          break;
-        case "BracketRight":
-          changeKoiCount(1);
-          break;
         case "KeyD":
           runtime.showDebug = !runtime.showDebug;
           break;
@@ -523,7 +510,7 @@ export function App() {
       renderer.dispose();
       runtimeRef.current = null;
     };
-  }, [changeKoiCount, toggleAmbientMode]);
+  }, [toggleAmbientMode]);
 
   const callFish = (event: ReactPointerEvent<HTMLCanvasElement>): void => {
     const runtime = runtimeRef.current;
@@ -576,7 +563,7 @@ export function App() {
           <canvas
             ref={canvasRef}
             id="pond"
-            aria-label="Animated procedural koi"
+            aria-label="Six carpes koï animées"
             onPointerDown={callFish}
           />
           {previewFamily !== null && settingsOpen && (
@@ -595,11 +582,12 @@ export function App() {
             }`}
           >
             <header className="brand-float">
-              <h1 className="brand-wordmark">nagomi</h1>
+              <h1 className="brand-wordmark">shinkzuku</h1>
+              <p className="brand-subtitle" lang="fr">Six carpes, six passages de la vie</p>
             </header>
 
             <div className="top-actions">
-              <GitHubStars repo={GITHUB_REPOSITORY} stargazersCount={2} />
+              <GitHubStars repo={GITHUB_REPOSITORY} stargazersCount={0} />
               <Separator orientation="vertical" />
               <Drawer
                 open={settingsOpen}
@@ -731,27 +719,9 @@ export function App() {
                 <Kbd className="control-shortcut">Space</Kbd>
               </Button>
               <Separator orientation="vertical" />
-              <Button
-                variant="ghost"
-                size="icon-sm"
-                onClick={() => changeKoiCount(-1)}
-                aria-label="Remove one koi"
-                aria-keyshortcuts="["
-              >
-                <Minus aria-hidden="true" />
-              </Button>
-              <output className="koi-count" aria-live="polite">
-                {stats.koi}
+              <output className="koi-count" aria-label="Nombre de carpes" aria-live="polite">
+                {stats.koi} koï
               </output>
-              <Button
-                variant="ghost"
-                size="icon-sm"
-                onClick={() => changeKoiCount(1)}
-                aria-label="Add one koi"
-                aria-keyshortcuts="]"
-              >
-                <Plus aria-hidden="true" />
-              </Button>
             </div>
             <Separator className="control-divider" orientation="vertical" />
             <div className="control-group control-group--environment">

@@ -41,7 +41,7 @@ const live = settings.live;
 // `maximumCount`/`maximumInstances` are fixed engine limits, not user
 // settings — attached once here rather than modeled in the schema.
 export const FISH: typeof live.koi & { maximumCount: number } = Object.assign(live.koi, {
-  maximumCount: 48,
+  maximumCount: 6,
 });
 export const TINY_FISH = live["tiny-fish"];
 export const TINY_FISH_SCHOOLS = live["tiny-fish-schools"];

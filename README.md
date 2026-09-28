@@ -1,4 +1,4 @@
-# nagomi
+# Shinkzuku — Six carpes, six passages de la vie
 
 Nagomi is an interactive, procedurally animated koi pond that runs in your browser. The fish
 swim on their own, change depth, react to nearby fish, and gather around the
@@ -33,14 +33,23 @@ npm run preview
 
 ## Tune
 
-Edit `src/config.ts` to change fish counts and sizes, koi colors, water colors,
+The pond contains exactly six koi carp, one of each pattern, representing the six passages of life. Small fish schools and population controls are disabled, including for restored settings.
+
+Edit `src/settings/definition.ts` to change fish sizes, koi colors, water colors,
 lotus leaves, flowers, and shadow strength.
 
 ## Controls
 
 - Click or tap to call the fish.
 - Press `Space` to scatter them.
-- Press `[` or `]` to change the fish count.
 - Press `D` to show the procedural spine.
 - Press `H` to hide the interface.
 - Press `R` to reset the simulation.
+
+## Vercel
+
+The project uses Vite, `npm run build`, and the `dist` output directory. Connect `Sitraka17/shinkzuku` to Vercel with `main` as the production branch. `vercel.json` provides the build settings and HTTP headers.
+
+## Credits
+
+Based on [Nagomi by Mayank Kadam](https://github.com/msk1039/procedural-koi-threejs). See [LICENSE](LICENSE) for the original PolyForm Noncommercial terms and required notice.

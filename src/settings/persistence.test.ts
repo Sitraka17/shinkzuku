@@ -25,13 +25,13 @@ describe("persistence", () => {
 
   it("round-trips overrides, weather, and rain through save/load", () => {
     const store = new SettingsStore();
-    store.set(["koi", "initialCount"], 22);
+    store.set(["koi", "eyeColor"], 22);
     store.setWeather("mist");
     save(store);
 
     const restored = new SettingsStore();
     loadInto(restored);
-    expect(restored.live.koi.initialCount).toBe(22);
+    expect(restored.live.koi.eyeColor).toBe(22);
     expect(restored.meta().weather).toBe("mist");
   });
 
@@ -40,14 +40,15 @@ describe("persistence", () => {
       "nagomi:pond-settings:v2",
       JSON.stringify({
         version: 2,
-        overrides: { "koi.depth.shadow.offset.x": 4.4, "koi.initialCount": 10 },
+        overrides: { "koi.depth.shadow.offset.x": 4.4, "koi.initialCount": 10, "tiny-fish.visibleSchoolCount": 32 },
         weather: "sunny",
         rain: false,
       }),
     );
     const store = new SettingsStore();
     expect(() => loadInto(store)).not.toThrow();
-    expect(store.live.koi.initialCount).toBe(10);
+    expect(store.live.koi.initialCount).toBe(6);
+    expect(store.live["tiny-fish"].visibleSchoolCount).toBe(0);
   });
 
   it("migrates a v1 snapshot to v2 overrides, dropping removed and unchanged fields", () => {
@@ -62,7 +63,8 @@ describe("persistence", () => {
 
     const store = new SettingsStore();
     loadInto(store);
-    expect(store.live.koi.initialCount).toBe(40);
+    expect(store.live.koi.initialCount).toBe(6);
+    expect(store.live["tiny-fish"].visibleSchoolCount).toBe(0);
     expect(store.meta().weather).toBe("sunset");
     expect(store.meta().rain).toBe(true);
     expect(localStorage.getItem("nagomi:pond-settings:v1")).toBeNull();
@@ -72,10 +74,10 @@ describe("persistence", () => {
   it("connectPersistence wires the store to flushPersist on demand", () => {
     const store = new SettingsStore();
     connectPersistence(store);
-    store.set(["koi", "initialCount"], 7);
+    store.set(["koi", "eyeColor"], 7);
     store.flushPersist();
     const saved = JSON.parse(localStorage.getItem("nagomi:pond-settings:v2")!);
-    expect(saved.overrides["koi.initialCount"]).toBe(7);
+    expect(saved.overrides["koi.eyeColor"]).toBe(7);
   });
 
   it("exposes the migration helper for direct testing", () => {

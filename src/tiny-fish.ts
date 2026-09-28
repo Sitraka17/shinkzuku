@@ -59,7 +59,7 @@ export class TinyFishSchools {
     this.ranges.length = 0;
     this.random.state = 0x51a7f15c;
 
-    for (const [schoolIndex, setting] of TINY_FISH_SCHOOLS.entries()) {
+    for (const [schoolIndex, setting] of TINY_FISH_SCHOOLS.slice(0, TINY_FISH.visibleSchoolCount).entries()) {
       const start = this.fish.length;
       const placement = viewportPoint(setting.x, setting.y);
       for (let index = 0; index < setting.count; index += 1) {

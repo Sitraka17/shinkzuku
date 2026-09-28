@@ -10,14 +10,14 @@ describe("SettingsStore", () => {
 
   it("set() updates live in place and keeps object identity", () => {
     const koiBefore = store.live.koi;
-    store.set(["koi", "initialCount"], 20);
+    store.set(["koi", "eyeColor"], 20);
     expect(store.live.koi).toBe(koiBefore);
-    expect(store.live.koi.initialCount).toBe(20);
+    expect(store.live.koi.eyeColor).toBe(20);
   });
 
   it("rejects an out-of-range or wrong-type value", () => {
-    store.set(["koi", "initialCount"], "nope" as unknown as number);
-    expect(store.live.koi.initialCount).toBe(14);
+    store.set(["koi", "eyeColor"], "nope" as unknown as number);
+    expect(store.live.koi.eyeColor).toBe(0x171815);
   });
 
   it("clamps koi depth ranges to 0..1 (regression: used to clamp incorrectly)", () => {
@@ -26,19 +26,19 @@ describe("SettingsStore", () => {
   });
 
   it("grows a collection when its count field increases, preserving array identity", () => {
-    const schools = store.live["tiny-fish-schools"];
-    expect(schools).toHaveLength(4);
-    store.set(["tiny-fish", "visibleSchoolCount"], 6);
-    expect(store.live["tiny-fish-schools"]).toBe(schools);
+    const schools = store.live["butterfly-spawns"];
     expect(schools).toHaveLength(6);
+    store.set(["butterflies", "visibleCount"], 8);
+    expect(store.live["butterfly-spawns"]).toBe(schools);
+    expect(schools).toHaveLength(8);
   });
 
   it("undoes collection growth", () => {
-    store.set(["tiny-fish", "visibleSchoolCount"], 6);
-    expect(store.live["tiny-fish-schools"]).toHaveLength(6);
+    store.set(["butterflies", "visibleCount"], 8);
+    expect(store.live["butterfly-spawns"]).toHaveLength(8);
     store.undo();
-    expect(store.live["tiny-fish-schools"]).toHaveLength(4);
-    expect(store.live["tiny-fish"].visibleSchoolCount).toBe(3);
+    expect(store.live["butterfly-spawns"]).toHaveLength(6);
+    expect(store.live.butterflies.visibleCount).toBe(4);
   });
 
   it("groups rapid edits with the same interaction key into one undo entry", () => {
@@ -61,19 +61,19 @@ describe("SettingsStore", () => {
   });
 
   it("supports multi-level undo/redo", () => {
-    store.set(["koi", "initialCount"], 20);
-    store.set(["koi", "initialCount"], 30, { interaction: "a" });
+    store.set(["koi", "eyeColor"], 20);
+    store.set(["koi", "eyeColor"], 30, { interaction: "a" });
     store.undo();
-    expect(store.live.koi.initialCount).toBe(20);
+    expect(store.live.koi.eyeColor).toBe(20);
     store.redo();
-    expect(store.live.koi.initialCount).toBe(30);
+    expect(store.live.koi.eyeColor).toBe(30);
   });
 
   it("setWeather drops only preset-owned overrides; later edits stick", () => {
     store.set(["koi", "shadow", "color"], 0xabcdef);
-    store.set(["koi", "initialCount"], 33); // not preset-owned
+    store.set(["koi", "eyeColor"], 33); // not preset-owned
     store.setWeather("moonlight");
-    expect(store.live.koi.initialCount).toBe(33); // survives
+    expect(store.live.koi.eyeColor).toBe(33); // survives
     expect(store.live.koi.shadow.color).not.toBe(0xabcdef); // preset-owned, dropped
 
     // A later edit on a preset-owned field sticks even after this weather switch.
@@ -91,11 +91,11 @@ describe("SettingsStore", () => {
     expect(store.live.koi.shadow.color).toBe(weatherColor);
   });
 
-  it("fires the koi:count effect tag with an effect-carrying change", () => {
+  it("fires the koi:appearance effect tag with an effect-carrying change", () => {
     const batches: unknown[][] = [];
     store.subscribe((batch) => batches.push([...batch]));
-    store.set(["koi", "initialCount"], 25);
-    expect(batches.flat().some((c) => (c as { effect?: string }).effect === "koi:count")).toBe(true);
+    store.set(["koi", "eyeColor"], 25);
+    expect(batches.flat().some((c) => (c as { effect?: string }).effect === "koi:appearance")).toBe(true);
   });
 
   it("reports koi:body with previous values for a single-field edit", () => {
@@ -105,7 +105,7 @@ describe("SettingsStore", () => {
       if (change) seenPrev = change.prev;
     });
     store.set(["koi", "tinyEvery"], 5);
-    expect(seenPrev).toBe(2);
+    expect(seenPrev).toBe(12);
   });
 
   it("reports tiny-fish:shift with prev/next coordinates for a school move", () => {

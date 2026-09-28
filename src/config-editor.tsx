@@ -126,6 +126,7 @@ function LeafControl({ node, path, label }: { node: AnyNode; path: SettingPath; 
     }
     case "num": {
       const [value, setValue] = useSetting<number>(path);
+      if (node.min === node.max) return null;
       return (
         <div className="config-property-row" data-base-ui-swipe-ignore>
           <Label>{prettify(label)}</Label>

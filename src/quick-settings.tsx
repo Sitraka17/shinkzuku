@@ -106,7 +106,6 @@ export function QuickSettings({
   const palettes = settings.live["koi-palettes"];
   const selectedPalette = palettes[paletteIndex] ?? palettes[0];
 
-  const [koiCount, setKoiCount] = useSetting<number>(["koi", "initialCount"]);
   const [base, setBase] = useSetting<number>(["koi-palettes", paletteIndex, "base"]);
   const [accent, setAccent] = useSetting<number>(["koi-palettes", paletteIndex, "accent"]);
   const [marking, setMarking] = useSetting<number>(["koi-palettes", paletteIndex, "marking"]);
@@ -126,16 +125,8 @@ export function QuickSettings({
       <section className="settings-quick__section" aria-labelledby="quick-koi-heading">
         <div className="settings-quick__heading">
           <div className="settings-quick__heading-row"><h3 id="quick-koi-heading">Koi</h3><button type="button" className="settings-section-reset" onClick={() => onResetSection(["koi", "koi-palettes", "koi-patterns"])}><RotateCcw aria-hidden="true" /> Reset</button></div>
-          <p>Choose how many koi swim in the pond and color each koi family.</p>
+          <p>Six carpes, six passages de la vie. Personnalisez les couleurs de chaque carpe.</p>
         </div>
-        <SettingSlider
-          label="Koi count"
-          description="Add or remove koi without restarting the pond."
-          value={koiCount}
-          min={1}
-          max={48}
-          onChange={setKoiCount}
-        />
         <div className="quick-setting" data-base-ui-swipe-ignore>
           <div className="quick-setting__copy">
             <Label htmlFor="quick-koi-family">Koi family</Label>
