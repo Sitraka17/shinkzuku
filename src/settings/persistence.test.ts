@@ -80,6 +80,22 @@ describe("persistence", () => {
     expect(saved.overrides["koi.eyeColor"]).toBe(7);
   });
 
+  it("keeps a custom floor and its colors across weather changes and reloads", () => {
+    const store = new SettingsStore();
+    store.set(["pond-bed", "material"], "brick");
+    store.set(["pond-bed", "materialBase"], 0xb5aca0);
+    store.set(["pond-bed", "customPalette"], true);
+    store.set(["pond-bed", "materialSeed"], 482);
+    store.setWeather("rain");
+    save(store);
+    const restored = new SettingsStore();
+    loadInto(restored);
+    expect(restored.live["pond-bed"].material).toBe("brick");
+    expect(restored.live["pond-bed"].materialBase).toBe(0xb5aca0);
+    expect(restored.live["pond-bed"].customPalette).toBe(true);
+    expect(restored.live["pond-bed"].materialSeed).toBe(482);
+  });
+
   it("exposes the migration helper for direct testing", () => {
     expect(typeof __internal.migrateV1ToOverrides).toBe("function");
   });

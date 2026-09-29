@@ -53,3 +53,15 @@ The project uses Vite, `npm run build`, and the `dist` output directory. Connect
 ## Credits
 
 Based on [Nagomi by Mayank Kadam](https://github.com/msk1039/procedural-koi-threejs). See [LICENSE](LICENSE) for the original PolyForm Noncommercial terms and required notice.
+
+## Materials and writing
+
+Choose a pond floor with **Fond**: light sand (default), cut stone, cobblestone,
+brick, wood, pool tiles, or the original green pond. **Créer** customizes the
+material colors and generates a new texture; the settings stay on this device.
+
+**Main** calls the six carp. **Bâton** selects sand and lets you draw with a mouse,
+stylus, or finger. The entire inscription disappears seven seconds after the last
+mark, measured in wall-clock time, including after a background tab resumes.
+Writing stays below the fish and water and is never persisted or uploaded.
+Selecting a different material returns to hand mode. `R` also clears the writing.

@@ -1199,3 +1199,29 @@ input[type="color"] {
 @media (max-width: 380px) {
   .brand-subtitle { max-width: 9rem; }
 }
+
+/* Quiet material and writing controls, shared by mouse and touch. */
+.control-dock { flex-wrap: wrap; justify-content: center; width: max-content; max-width: calc(100% - 1.5rem); }
+.pond-tools { position: relative; display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 0.25rem; grid-column: 1 / -1; }
+.pond-tool-toggle { display: flex; gap: 0.1rem; }
+.pond-tool-toggle [aria-pressed="true"] { background: #ded2ae; color: #292b24; }
+.pond-material-picker { display: flex; align-items: center; gap: 0.35rem; padding-inline: 0.35rem; font-size: 0.75rem; }
+.pond-material-picker select { max-width: 9rem; padding: 0.35rem; border: 1px solid var(--border); border-radius: 0.5rem; background: #252822; color: #eeeadd; font: inherit; }
+.pond-material-picker select:focus-visible { outline: 2px solid #ded2ae; outline-offset: 2px; }
+.pond-material-editor { position: absolute; bottom: calc(100% + 0.8rem); left: 50%; transform: translateX(-50%); width: min(21rem, calc(100vw - 2rem)); padding: 1rem; border: 1px solid #53574b; border-radius: 1rem; background: #22261f; box-shadow: 0 12px 40px #0007; color: #eeeadd; }
+.pond-material-editor__heading { display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; }
+.pond-material-editor h2 { font-size: 0.95rem; font-weight: 600; }
+.pond-material-editor p { margin: 0.65rem 0; font-size: 0.78rem; line-height: 1.5; color: #bfc5b5; }
+.pond-material-colors { display: flex; gap: 1rem; margin: 0.8rem 0; }
+.pond-material-colors label { display: grid; gap: 0.4rem; font-size: 0.75rem; }
+.pond-material-colors input { width: 5rem; height: 2rem; cursor: pointer; }
+#pond[data-tool="stick"] { cursor: crosshair; }
+.sand-writing-hint { position: absolute; bottom: 1rem; left: 50%; transform: translateX(-50%); width: max-content; max-width: 85%; margin: 0; padding: 0.45rem 0.7rem; border-radius: 0.6rem; background: #22261fcf; color: #eeeadd; font-size: 0.7rem; text-align: center; pointer-events: none; }
+@media (min-width: 701px) { .sand-writing-hint { bottom: 5.5rem; } }
+@media (max-width: 700px) {
+  .control-dock { width: max-content; max-width: calc(100vw - 1rem); }
+  .pond-tools { border-top: 1px solid var(--border); padding-top: 0.3rem; }
+  .pond-tool-toggle [data-slot="button"] { padding-inline: 0.4rem; }
+  .pond-material-picker select { max-width: 7.5rem; }
+}
+#pond[data-tool="hand"] { cursor: pointer; }

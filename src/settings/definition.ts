@@ -20,6 +20,8 @@ import {
   type ValueOf,
 } from "./schema";
 
+import { POND_MATERIALS, type PondMaterial } from "../pond-materials";
+
 const TAU = Math.PI * 2;
 
 // The settings coordinates below are authored in this fixed landscape layout
@@ -344,6 +346,11 @@ const tinyFishSchools = collection(tinyFishSchoolItem, [
 
 const pondBed = group(
   {
+    material: choice<PondMaterial>({ default: "sand", options: POND_MATERIALS.map(({ value, label }) => ({ value, label })) }),
+    customPalette: bool({ default: false }),
+    materialBase: color({ default: 0xcbbd98 }),
+    materialDetail: color({ default: 0x998966 }),
+    materialSeed: num({ default: 0, min: 0, max: 99999, step: 1, int: true }),
     deepColor: rgb({ default: [0.486, 0.718, 0.631], min: 0, max: 1, step: 0.001 }),
     shallowColor: rgb({ default: [0.145, 0.395, 0.255], min: 0, max: 1, step: 0.001 }),
     speckColor: rgb({ default: [0.02, 0.065, 0.04], min: 0, max: 1, step: 0.001 }),

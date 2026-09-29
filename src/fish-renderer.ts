@@ -420,7 +420,13 @@ export class FishRenderer {
     this.butterflies.resize(width / oldWidth, height / oldHeight);
   }
 
+  public beginWriting(point: { x: number; y: number }): void { this.pondBed.beginWriting(point); }
+  public continueWriting(point: { x: number; y: number }): void { this.pondBed.continueWriting(point); }
+  public endWriting(): void { this.pondBed.endWriting(); }
+  public clearWriting(): void { this.pondBed.clearWriting(); }
+
   public dispose(): void {
+    this.pondBed.dispose();
     this.underwaterTarget.dispose();
     this.compositeTarget.dispose();
     this.surfaceDisturbance.dispose();

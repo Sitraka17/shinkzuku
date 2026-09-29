@@ -56,6 +56,7 @@ import {
   FIXED_STEP,
   setCanvasSize,
 } from "./config";
+import { PondTools, type PondTool } from "./pond-tools";
 import { FishRenderer } from "./fish-renderer";
 import { useIsMobile } from "./hooks/use-mobile";
 import { clamp, vec } from "./math";
@@ -164,6 +165,14 @@ export function App() {
   const [ambientControlsVisible, setAmbientControlsVisible] = useState(true);
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [weatherMenuOpen, setWeatherMenuOpen] = useState(false);
+  const [materialEditorOpen, setMaterialEditorOpen] = useState(false);
+  const [pondTool, setPondTool] = useState<PondTool>("hand");
+  const drawingPointer = useRef<number | null>(null);
+  const changePondTool = (tool: PondTool) => {
+    drawingPointer.current = null;
+    runtimeRef.current?.renderer.endWriting();
+    setPondTool(tool);
+  };
   const [soundEnabled, setSoundEnabled] = useState<boolean>(
     AUDIO.defaultEnabled,
   );
@@ -395,7 +404,7 @@ export function App() {
   }, [setAmbientModeState]);
 
   useEffect(() => {
-    if (!ambientMode || settingsOpen || weatherMenuOpen) {
+    if (!ambientMode || settingsOpen || weatherMenuOpen || materialEditorOpen) {
       setAmbientControlsVisible(true);
       return;
     }
@@ -422,7 +431,7 @@ export function App() {
       window.removeEventListener("pointerdown", revealControls);
       window.removeEventListener("keydown", revealControls);
     };
-  }, [ambientMode, settingsOpen, weatherMenuOpen]);
+  }, [ambientMode, settingsOpen, weatherMenuOpen, materialEditorOpen]);
 
   useEffect(() => {
     if (!showInterface && previewFamilyRef.current !== null) setFamilyPreview(null);
@@ -487,6 +496,7 @@ export function App() {
           break;
         case "KeyR":
           school.reset();
+          renderer.clearWriting();
           break;
         case "KeyF":
           event.preventDefault();
@@ -533,6 +543,29 @@ export function App() {
     setStats(sceneStats(runtime));
   };
 
+  const writingPoint = (event: ReactPointerEvent<HTMLCanvasElement>) => {
+    const bounds = event.currentTarget.getBoundingClientRect();
+    return { x: (event.clientX - bounds.left) / bounds.width, y: (event.clientY - bounds.top) / bounds.height };
+  };
+  const startPondGesture = (event: ReactPointerEvent<HTMLCanvasElement>) => {
+    if (!event.isPrimary || event.button !== 0) return;
+    if (pondTool === "hand") { callFish(event); return; }
+    event.preventDefault();
+    event.currentTarget.setPointerCapture(event.pointerId);
+    drawingPointer.current = event.pointerId;
+    runtimeRef.current?.renderer.beginWriting(writingPoint(event));
+  };
+  const movePondGesture = (event: ReactPointerEvent<HTMLCanvasElement>) => {
+    if (drawingPointer.current !== event.pointerId) return;
+    runtimeRef.current?.renderer.continueWriting(writingPoint(event));
+  };
+  const endPondGesture = (event: ReactPointerEvent<HTMLCanvasElement>) => {
+    if (drawingPointer.current !== event.pointerId) return;
+    drawingPointer.current = null;
+    runtimeRef.current?.renderer.endWriting();
+    if (event.currentTarget.hasPointerCapture(event.pointerId)) event.currentTarget.releasePointerCapture(event.pointerId);
+  };
+
   const revealHiddenInterfaceOnMobile = (
     event: ReactPointerEvent<HTMLElement>,
   ): void => {
@@ -543,7 +576,7 @@ export function App() {
   };
 
   const selectedWeather = getWeatherPreset(weatherPreset);
-  const ambientUiHeldOpen = settingsOpen || weatherMenuOpen;
+  const ambientUiHeldOpen = settingsOpen || weatherMenuOpen || materialEditorOpen;
   const ambientUiHidden =
     ambientMode && !ambientControlsVisible && !ambientUiHeldOpen;
 
@@ -564,8 +597,14 @@ export function App() {
             ref={canvasRef}
             id="pond"
             aria-label="Six carpes koï animées"
-            onPointerDown={callFish}
+            data-tool={pondTool}
+            onPointerDown={startPondGesture}
+            onPointerMove={movePondGesture}
+            onPointerUp={endPondGesture}
+            onPointerCancel={endPondGesture}
+            onLostPointerCapture={endPondGesture}
           />
+          {pondTool === "stick" && <p className="sand-writing-hint" role="status" lang="fr">Dessinez votre nom dans le sable · il s’efface après 7 secondes</p>}
           {previewFamily !== null && settingsOpen && (
             <div className="pond-preview-label" aria-live="polite">
               {settings.live["koi-palettes"][previewFamily]?.name ?? "Koi"} family preview
@@ -724,6 +763,7 @@ export function App() {
               </output>
             </div>
             <Separator className="control-divider" orientation="vertical" />
+            <PondTools tool={pondTool} onToolChange={changePondTool} editorOpen={materialEditorOpen} onEditorChange={setMaterialEditorOpen} />
             <div className="control-group control-group--environment">
               <DropdownMenu
                 open={weatherMenuOpen}
