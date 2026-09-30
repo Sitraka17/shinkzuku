@@ -65,3 +65,23 @@ stylus, or finger. The entire inscription disappears seven seconds after the las
 mark, measured in wall-clock time, including after a background tab resumes.
 Writing stays below the fish and water and is never persisted or uploaded.
 Selecting a different material returns to hand mode. `R` also clears the writing.
+
+## Bible verses
+
+A scripture card appears after 30 minutes, and every 30 minutes afterwards,
+while the pond page remains open. It stays for one minute and can be dismissed.
+Hidden tabs do not consume the readings: returning after missed intervals shows
+one verse, without a burst of missed cards. Reloading starts a new half-hour
+session. The automatic schedule continues in ambient mode and when the UI is hidden.
+
+The language selector next to the book icon offers **Français**, **English**, and
+**Latina**. It remembers the choice on this device; initially it uses the browser
+language when supported, or French. The book icon previews a verse immediately
+without postponing the next automatic appearance. Changing language translates
+the currently visible verse without restarting the timer.
+
+Six readings cycle in order: John 14:27, Matthew 11:28, Matthew 5:9,
+1 Corinthians 13:13, Matthew 5:7, and Matthew 11:30. The bundled public-domain
+texts are Louis Segond 1910, King James Version, and Biblia Sacra Vulgata.
+Each card links to its reference and edition on Bible Gateway. There is no
+runtime Bible API call, generated translation, or background notification.

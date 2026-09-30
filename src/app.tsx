@@ -56,6 +56,7 @@ import {
   FIXED_STEP,
   setCanvasSize,
 } from "./config";
+import { useBibleVerses, VerseCard, VerseControls } from "./bible-verse-ui";
 import { PondTools, type PondTool } from "./pond-tools";
 import { FishRenderer } from "./fish-renderer";
 import { useIsMobile } from "./hooks/use-mobile";
@@ -148,6 +149,7 @@ function WeatherIcon({ id }: { id: WeatherPresetId }) {
 }
 
 export function App() {
+  const verses = useBibleVerses();
   const isMobile = useIsMobile();
   const stageRef = useRef<HTMLElement>(null);
   const displayRef = useRef<HTMLDivElement>(null);
@@ -604,6 +606,7 @@ export function App() {
             onPointerCancel={endPondGesture}
             onLostPointerCapture={endPondGesture}
           />
+          <VerseCard verses={verses} />
           {pondTool === "stick" && <p className="sand-writing-hint" role="status" lang="fr">Dessinez votre nom dans le sable · il s’efface après 7 secondes</p>}
           {previewFamily !== null && settingsOpen && (
             <div className="pond-preview-label" aria-live="polite">
@@ -626,6 +629,7 @@ export function App() {
             </header>
 
             <div className="top-actions">
+              <VerseControls verses={verses} />
               <GitHubStars repo={GITHUB_REPOSITORY} stargazersCount={0} />
               <Separator orientation="vertical" />
               <Drawer

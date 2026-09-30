@@ -1225,3 +1225,27 @@ input[type="color"] {
   .pond-material-picker select { max-width: 7.5rem; }
 }
 #pond[data-tool="hand"] { cursor: pointer; }
+
+/* Scripture remains readable even while ambient mode hides the toolbar. */
+.verse-controls { display: flex; align-items: center; gap: 0.2rem; padding-inline: 0.25rem; }
+.verse-controls select { max-width: 6rem; background: transparent; color: var(--foreground); border: 0; padding: 0.35rem 0.15rem; font-size: 0.75rem; cursor: pointer; }
+.verse-controls option { background: #23281f; color: #f5f0df; }
+.verse-preview, .verse-dismiss { display: inline-flex; align-items: center; justify-content: center; width: 2rem; height: 2rem; border: 0; border-radius: 0.5rem; background: transparent; color: inherit; cursor: pointer; }
+.verse-preview:hover, .verse-dismiss:hover { background: #ffffff15; }
+.verse-controls select:focus-visible, .verse-preview:focus-visible, .verse-dismiss:focus-visible, .verse-reference:focus-visible { outline: 2px solid #ded2ae; outline-offset: 2px; }
+.verse-layer { position: absolute; inset: 0; z-index: 4; display: grid; place-items: center; padding: 4.5rem 1rem 6rem; pointer-events: none; }
+.verse-card { position: relative; width: min(100%, 32rem); max-height: 100%; overflow-y: auto; padding: clamp(1rem, 3vw, 1.8rem); border: 1px solid #e1d5b54a; border-radius: 1rem; background: #202b24ed; box-shadow: 0 12px 48px #0004; color: #f6f0df; text-align: center; pointer-events: auto; animation: verse-arrive 700ms ease-out both; }
+.verse-dismiss { position: absolute; top: 0.35rem; right: 0.35rem; }
+.verse-eyebrow { margin: 0 1rem 0.8rem; font-size: 0.65rem; letter-spacing: 0.14em; text-transform: uppercase; color: #d8cba7; }
+.verse-card blockquote { margin: 0 0 1rem; font-family: Georgia, "Times New Roman", serif; font-size: clamp(1.05rem, 2vw, 1.4rem); line-height: 1.5; text-wrap: pretty; }
+.verse-reference { font-size: 0.8rem; color: #e3d5ad; text-decoration: underline; text-underline-offset: 0.2em; }
+.verse-edition { margin: 0.35rem 0 0; font-size: 0.65rem; color: #b5c0b2; }
+@keyframes verse-arrive { from { opacity: 0; transform: translateY(0.4rem); } to { opacity: 1; transform: translateY(0); } }
+@media (prefers-reduced-motion: reduce) { .verse-card { animation: none; } }
+@media (max-width: 700px) {
+  .pond-ui { flex-wrap: wrap; gap: 0.4rem; }
+  .top-actions { margin-left: auto; }
+  .verse-controls select { max-width: 5.5rem; }
+  .verse-layer { padding: 1rem; }
+  .stage--ambient .verse-layer { padding: 5rem 1rem 9rem; }
+}
